@@ -1,0 +1,30 @@
+.page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.page__title {
+  width: min(100%, 700px);
+  margin:0;
+  color: #f7f4ff;
+  background: linear-gradient(135deg, #ffffff, #c8b8ff 45%, #8b5cf6);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: clamp(50px, 8vw, 75px);
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 0 24px rgba(139, 92, 246, 0.38);
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: 12px;
+  }
+}
