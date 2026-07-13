@@ -47,6 +47,13 @@ const PLATFORMS = {
 
 const PLATFORM_OPTIONS = Object.entries(PLATFORMS)
 
+const REMINDER_OPTIONS = [
+  { id: '1-day', label: '1 day before', selected: true },
+  { id: '1-hour', label: '1 hour before', selected: true },
+  { id: '30-mins', label: '30 mins before', selected: false },
+  { id: '10-mins', label: '10 mins before', selected: false },
+]
+
 const today= new Date()
 
 export default function Calendar() {
@@ -85,6 +92,8 @@ export default function Calendar() {
 
   const total_days= days_before + (new Date(firstDate.getFullYear(),firstDate.getMonth()+1,0).getDate())
 
+  //dom elements
+
   return (
     <div className="calendar">
       <header className="calendar__header">
@@ -95,6 +104,7 @@ export default function Calendar() {
           onClick={()=>{
             setFirstDate((prevDate)=> new Date(prevDate.getFullYear(),prevDate.getMonth()-1,1))
           }}
+          disabled={(((today.getFullYear()-firstDate.getFullYear())*12+(today.getMonth()-firstDate.getMonth()))>=1)}
         >
           ‹
         </button>
@@ -114,9 +124,70 @@ export default function Calendar() {
       </header>
 
       <div className="calendar__filters">
-        <button type="button" className="calendar__export-button">
-          Export ICS
-        </button>
+        <details className="calendar__select calendar__url-select">
+          <summary className="calendar__select-trigger">
+            Calendar URL
+          </summary>
+
+          <div className="calendar__select-menu calendar__url-menu">
+            <details className="calendar__url-section" open>
+              <summary className="calendar__url-section-title">
+                Platforms
+              </summary>
+
+              <div className="calendar__url-section-options">
+                {PLATFORM_OPTIONS.map(([id, { label, shortLabel }]) => (
+                  <label key={id} className="calendar__select-option">
+                    <input
+                      type="checkbox"
+                      defaultChecked
+                    />
+                    <span
+                      className="calendar__legend-dot"
+                      style={{ backgroundColor: `var(--${id})` }}
+                    />
+                    <span className="calendar__select-name">{label}</span>
+                    <span
+                      className="calendar__event calendar__select-code"
+                      style={{ color: `var(--${id})` }}
+                    >
+                      {shortLabel}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </details>
+
+            <details className="calendar__url-section" open>
+              <summary className="calendar__url-section-title">
+                Reminders
+              </summary>
+
+              <div className="calendar__url-section-options">
+                {REMINDER_OPTIONS.map(({ id, label, selected }) => (
+                  <label
+                    key={id}
+                    className="calendar__select-option calendar__reminder-option"
+                  >
+                    <input
+                      type="checkbox"
+                      defaultChecked={selected}
+                    />
+                    <span className="calendar__select-name">{label}</span>
+                  </label>
+                ))}
+              </div>
+            </details>
+
+            <button
+              type="button"
+              className="calendar__export-button"
+              title="Copy Calendar URL for the selected options"
+            >
+              Copy Calendar URL
+            </button>
+          </div>
+        </details>
 
         <span className="calendar__filter-label">Platforms</span>
 
