@@ -48,9 +48,10 @@ const PLATFORMS = {
 const PLATFORM_OPTIONS = Object.entries(PLATFORMS)
 
 const REMINDER_OPTIONS = [
+  { id: '1-week', label: '1 week before', selected: false },
+  { id: '3-days', label: '3 days before', selected: false },
   { id: '1-day', label: '1 day before', selected: true },
   { id: '1-hour', label: '1 hour before', selected: true },
-  { id: '30-mins', label: '30 mins before', selected: false },
   { id: '10-mins', label: '10 mins before', selected: false },
 ]
 
@@ -140,7 +141,7 @@ export default function Calendar() {
                   <label key={id} className="calendar__select-option">
                     <input
                       type="checkbox"
-                      defaultChecked
+                      defaultChecked={true}
                     />
                     <span
                       className="calendar__legend-dot"
