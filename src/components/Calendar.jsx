@@ -30,11 +30,11 @@ const PLATFORMS = {
 const PLATFORM_OPTIONS = Object.entries(PLATFORMS)
 
 const REMINDER_OPTIONS = [
-  { id: '1-week', label: '1 week before', selected: false },
-  { id: '3-days', label: '3 days before', selected: false },
-  { id: '1-day', label: '1 day before', selected: true },
-  { id: '1-hour', label: '1 hour before', selected: true },
-  { id: '10-mins', label: '10 mins before', selected: false },
+  { id: '1-week', label: '1 week before', value: 10080, selected: false },
+  { id: '3-days', label: '3 days before', value: 4320, selected: false },
+  { id: '1-day', label: '1 day before', value: 1440, selected: true },
+  { id: '1-hour', label: '1 hour before', value: 60, selected: true },
+  { id: '10-mins', label: '10 mins before', value: 10, selected: false },
 ]
 
 const today= new Date()
@@ -59,7 +59,15 @@ const formatStartTime = (startTime) => new Date(startTime * 1000).toLocaleTimeSt
 export default function Calendar() {
 
   const calendarRef = useRef(null)
+  const toastTimerRef = useRef(null)
   const [events, setEvents] = useState([])
+  const [calendarPlatforms, setCalendarPlatforms] = useState(
+    PLATFORM_OPTIONS.map(([id]) => id),
+  )
+  const [selectedReminders, setSelectedReminders] = useState(
+    REMINDER_OPTIONS.filter(({ selected }) => selected).map(({ value }) => value),
+  )
+  const [toast, setToast] = useState(null)
 
   useEffect(() => {
     Promise.allSettled(
@@ -81,6 +89,8 @@ export default function Calendar() {
         setEvents(contests)
       })
   }, [])
+
+  useEffect(() => () => clearTimeout(toastTimerRef.current), [])
 
   useEffect(() => {
     const closeDetailsOnOutsideClick = (event) => {
@@ -119,6 +129,40 @@ export default function Calendar() {
         ? currentPlatforms.filter((platformId) => platformId !== id)
         : [...currentPlatforms, id],
     )
+  }
+
+  const toggleCalendarPlatform = (id) => {
+    setCalendarPlatforms((platforms) =>
+      platforms.includes(id)
+        ? platforms.filter((platform) => platform !== id)
+        : [...platforms, id],
+    )
+  }
+
+  const toggleReminder = (value) => {
+    setSelectedReminders((reminders) =>
+      reminders.includes(value)
+        ? reminders.filter((reminder) => reminder !== value)
+        : [...reminders, value],
+    )
+  }
+
+  const showToast = (message, type) => {
+    clearTimeout(toastTimerRef.current)
+    setToast({ message, type })
+    toastTimerRef.current = setTimeout(() => setToast(null), 3000)
+  }
+
+  const copyCalendarUrl = async () => {
+    const calendarUrl = `${window.location.origin}/api/calendar/ics?platforms=${calendarPlatforms.join(',')}&reminders=${selectedReminders.join(',')}`
+
+    try {
+      await navigator.clipboard.writeText(calendarUrl)
+      showToast('URL copied successfully', 'success')
+    } catch (error) {
+      console.error('Failed to copy calendar URL:', error)
+      showToast('Failed to copy URL', 'error')
+    }
   }
 
   //calendar handling
@@ -178,7 +222,8 @@ export default function Calendar() {
                   <label key={id} className="calendar__select-option">
                     <input
                       type="checkbox"
-                      defaultChecked={true}
+                      checked={calendarPlatforms.includes(id)}
+                      onChange={() => toggleCalendarPlatform(id)}
                     />
                     <span
                       className="calendar__legend-dot"
@@ -202,14 +247,15 @@ export default function Calendar() {
               </summary>
 
               <div className="calendar__url-section-options">
-                {REMINDER_OPTIONS.map(({ id, label, selected }) => (
+                {REMINDER_OPTIONS.map(({ id, label, value }) => (
                   <label
                     key={id}
                     className="calendar__select-option calendar__reminder-option"
                   >
                     <input
                       type="checkbox"
-                      defaultChecked={selected}
+                      checked={selectedReminders.includes(value)}
+                      onChange={() => toggleReminder(value)}
                     />
                     <span className="calendar__select-name">{label}</span>
                   </label>
@@ -221,6 +267,7 @@ export default function Calendar() {
               type="button"
               className="calendar__export-button"
               title="Copy Calendar URL for the selected options"
+              onClick={copyCalendarUrl}
             >
               Copy Calendar URL
             </button>
@@ -362,6 +409,15 @@ export default function Calendar() {
           )
         )}
       </footer>
+
+      {toast && (
+        <div
+          className={`calendar__toast calendar__toast--${toast.type}`}
+          role={toast.type === 'error' ? 'alert' : 'status'}
+        >
+          {toast.message}
+        </div>
+      )}
     </div>
   )
 }

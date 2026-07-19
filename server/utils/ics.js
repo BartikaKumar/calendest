@@ -1,3 +1,10 @@
+const platforms={
+    cc:"Codechef",
+    cf:"Codeforces",
+    lc:"Leetcode",
+    ac:"Atcoder"
+}
+
 function formatIcsDate(timestamp) {
     return new Date(timestamp)
       .toISOString()
@@ -27,8 +34,7 @@ function formatIcsDate(timestamp) {
     const generatedAt = formatIcsDate(Date.now())
   
     const events = contests.map(contest => {
-      // Assumes startTime is milliseconds and duration is seconds
-      const startTime = Number(contest.startTime)
+      const startTime = Number(contest.startTime) * 1000
       const endTime = startTime + Number(contest.duration) * 1000
   
       const alarms = reminders
@@ -37,13 +43,13 @@ function formatIcsDate(timestamp) {
   
       return [
         "BEGIN:VEVENT",
-        `UID:${escapeIcs(`${contest.platform}-${contest.contestId}@contestra`)}`,
+        `UID:${escapeIcs(`${contest.platform}-${contest.contestId}@calendest`)}`,
         `DTSTAMP:${generatedAt}`,
         `DTSTART:${formatIcsDate(startTime)}`,
         `DTEND:${formatIcsDate(endTime)}`,
         `SUMMARY:${escapeIcs(contest.name)}`,
         `DESCRIPTION:${escapeIcs(
-          `Programming contest on ${contest.platform}`
+          `Contest on ${platforms[contest.platform]}`
         )}`,
         contest.url ? `URL:${contest.url}` : null,
         alarms,
@@ -58,8 +64,8 @@ function formatIcsDate(timestamp) {
       "VERSION:2.0",
       "CALSCALE:GREGORIAN",
       "METHOD:PUBLISH",
-      "PRODID:-//Contestra//Contest Calendar//EN",
-      "X-WR-CALNAME:Contestra",
+      "PRODID:-//Calendest//Contest Calendar//EN",
+      "X-WR-CALNAME:Calendest",
       ...events,
       "END:VCALENDAR",
       ""

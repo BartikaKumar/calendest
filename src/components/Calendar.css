@@ -129,7 +129,6 @@
     position: absolute;
     z-index: 2;
     top: calc(100% + 8px);
-    right: 0;
     width: 210px;
     padding: 8px;
     border: 1px solid var(--border);
@@ -388,7 +387,39 @@
      flex-shrink: 0; 
     }
 
+  .calendar__toast {
+    position: fixed;
+    z-index: 10;
+    right: 16px;
+    bottom: 16px;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    padding: 10px 14px;
+    border: 1px solid currentColor;
+    border-radius: 10px;
+    background: #151526;
+    color: var(--text);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    font-size: 0.75rem;
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  .calendar__toast--success {
+    color: var(--atcoder);
+  }
+
+  .calendar__toast--error {
+    color: #f87171;
+  }
+
 @media (max-width: 520px) {
+  .calendar__toast {
+    right: 12px;
+    bottom: 12px;
+    max-width: calc(100vw - 24px);
+  }
+
   .calendar__filters {
     align-items: stretch;
     flex-direction: column;
