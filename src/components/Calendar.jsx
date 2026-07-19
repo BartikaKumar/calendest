@@ -1,47 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import './Calendar.css'
 
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-const EVENTS_BY_DAY = {
-  4: ['atcoder'],
-  5: ['codechef'],
-  6: ['codeforces'],
-  8: ['codeforces'],
-  9: ['leetcode'],
-  10: ['atcoder'],
-  11: ['codeforces', 'codechef'],
-  12: ['leetcode'],
-  13: ['atcoder'],
-  14: ['codeforces', 'codechef', 'atcoder'],
-  16: ['atcoder'],
-  17: ['codeforces'],
-  20: ['leetcode'],
-  22: ['codeforces', 'atcoder'],
-  23: ['codechef'],
-  25: ['codechef'],
-  26: ['codeforces', 'atcoder'],
-  28: ['leetcode'],
-  30: ['codeforces'],
-}
-
 const PLATFORMS = {
-  codeforces: {
+  cf: {
     label: 'Codeforces',
     shortLabel: 'CF',
+    color: 'codeforces',
   },
-  codechef: {
+  cc: {
     label: 'CodeChef',
     shortLabel: 'CC',
+    color: 'codechef',
   },
-  atcoder: {
+  ac: {
     label: 'AtCoder',
     shortLabel: 'AC',
+    color: 'atcoder',
   },
-  leetcode: {
+  lc: {
     label: 'LeetCode',
     shortLabel: 'LC',
+    color: 'leetcode',
   },
 }
 
@@ -57,7 +39,62 @@ const REMINDER_OPTIONS = [
 
 const today= new Date()
 
+const formatDuration = (duration) => {
+  const days = Math.floor(duration / 86400)
+  const hours = Math.floor((duration % 86400) / 3600)
+  const minutes = Math.floor((duration % 3600) / 60)
+
+  return [
+    days && `${days}d`,
+    hours && `${hours}h`,
+    minutes && `${minutes}m`,
+  ].filter(Boolean).join(' ') || `${duration}s`
+}
+
+const formatStartTime = (startTime) => new Date(startTime * 1000).toLocaleTimeString(
+  [],
+  { hour: 'numeric', minute: '2-digit' },
+)
+
 export default function Calendar() {
+
+  const calendarRef = useRef(null)
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    Promise.allSettled(
+      PLATFORM_OPTIONS.map(async ([platform]) => {
+        const response = await fetch(`/api/contests/${platform}`)
+        if (!response.ok) throw new Error(`Failed to fetch ${platform} contests`)
+
+        return response.json()
+      }),
+    )
+      .then((results) => {
+        const contests = []
+
+        results.forEach((result) => {
+          if (result.status === 'fulfilled') contests.push(...result.value)
+          else console.error(result.reason)
+        })
+
+        setEvents(contests)
+      })
+  }, [])
+
+  useEffect(() => {
+    const closeDetailsOnOutsideClick = (event) => {
+      calendarRef.current?.querySelectorAll('details[open]').forEach((details) => {
+        if (!details.contains(event.target)) {
+          details.open = false
+          details.querySelector(':scope > summary')?.blur()
+        }
+      })
+    }
+
+    document.addEventListener('click', closeDetailsOnOutsideClick)
+    return () => document.removeEventListener('click', closeDetailsOnOutsideClick)
+  }, [])
 
   // selected platforms handling
 
@@ -96,7 +133,7 @@ export default function Calendar() {
   //dom elements
 
   return (
-    <div className="calendar">
+    <div ref={calendarRef} className="calendar">
       <header className="calendar__header">
         <button
           type="button"
@@ -137,7 +174,7 @@ export default function Calendar() {
               </summary>
 
               <div className="calendar__url-section-options">
-                {PLATFORM_OPTIONS.map(([id, { label, shortLabel }]) => (
+                {PLATFORM_OPTIONS.map(([id, { label, shortLabel, color }]) => (
                   <label key={id} className="calendar__select-option">
                     <input
                       type="checkbox"
@@ -145,12 +182,12 @@ export default function Calendar() {
                     />
                     <span
                       className="calendar__legend-dot"
-                      style={{ backgroundColor: `var(--${id})` }}
+                      style={{ backgroundColor: `var(--${color})` }}
                     />
                     <span className="calendar__select-name">{label}</span>
                     <span
                       className="calendar__event calendar__select-code"
-                      style={{ color: `var(--${id})` }}
+                      style={{ color: `var(--${color})` }}
                     >
                       {shortLabel}
                     </span>
@@ -198,7 +235,7 @@ export default function Calendar() {
           </summary>
 
           <div className="calendar__select-menu">
-            {PLATFORM_OPTIONS.map(([id, { label, shortLabel }]) => (
+            {PLATFORM_OPTIONS.map(([id, { label, shortLabel, color }]) => (
               <label key={id} className="calendar__select-option">
                 <input
                   type="checkbox"
@@ -207,12 +244,12 @@ export default function Calendar() {
                 />
                 <span
                   className="calendar__legend-dot"
-                  style={{ backgroundColor: `var(--${id})` }}
+                  style={{ backgroundColor: `var(--${color})` }}
                 />
                 <span className="calendar__select-name">{label}</span>
                 <span
                   className="calendar__event calendar__select-code"
-                  style={{ color: `var(--${id})` }}
+                  style={{ color: `var(--${color})` }}
                 >
                   {shortLabel}
                 </span>
@@ -234,10 +271,18 @@ export default function Calendar() {
         {Array.from({length:(total_days<=35)?35:42},(_,index)=>{
           const currentDate=new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate()+index)
           const inMonth= currentDate.getMonth()==firstDate.getMonth()
-          const events = inMonth ? EVENTS_BY_DAY[currentDate.getDate()] ?? [] : []
-          const visibleEvents = events.filter((event) =>
-            selectedPlatformSet.has(event),
-          )
+          const visibleEvents = inMonth ? events.filter((event) => {
+            const eventDate = new Date(event.startTime * 1000)
+            return selectedPlatformSet.has(event.platform)
+              && eventDate.getFullYear() === currentDate.getFullYear()
+              && eventDate.getMonth() === currentDate.getMonth()
+              && eventDate.getDate() === currentDate.getDate()
+          }) : []
+          const eventsByPlatform = visibleEvents.reduce((groups, event) => {
+            if (!groups[event.platform]) groups[event.platform] = []
+            groups[event.platform].push(event)
+            return groups
+          }, {})
 
           return (
             <div
@@ -251,16 +296,43 @@ export default function Calendar() {
 
               {visibleEvents.length > 0 && (
                 <div className="calendar__events">
-                  {visibleEvents.map((event) => (
-                    <span
-                      key={event}
-                      className="calendar__event"
-                      style={{ color: `var(--${event})` }}
-                      title={PLATFORMS[event].label}
-                    >
-                      {PLATFORMS[event].shortLabel}
-                    </span>
-                  ))}
+                  {PLATFORM_OPTIONS.map(([platform, platformDetails]) => {
+                    const platformEvents = eventsByPlatform[platform]
+                    if (!platformEvents) return null
+
+                    return (
+                      <details key={platform} className="calendar__event-details">
+                        <summary
+                          className="calendar__event"
+                          style={{ color: `var(--${platformDetails.color})` }}
+                          title={`${platformDetails.label} contests`}
+                        >
+                          {platformDetails.shortLabel}
+                        </summary>
+
+                        <div className="calendar__select-menu calendar__event-menu">
+                          <div className="calendar__event-menu-title">
+                            {platformDetails.label}
+                          </div>
+
+                          {platformEvents.map((event) => (
+                            <a
+                              key={event.contestId}
+                              className="calendar__contest-link"
+                              href={event.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <span className="calendar__contest-name">{event.name}</span>
+                              <span className="calendar__contest-meta">
+                                {formatStartTime(event.startTime)} · {formatDuration(event.duration)}
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                      </details>
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -270,7 +342,7 @@ export default function Calendar() {
 
       <footer className="calendar__legend">
         {visiblePlatforms.map(
-          ([id, { label }], index) => (
+          ([id, { label, color }], index) => (
             <div key={id} className="calendar__legend-item">
               {index > 0 && (
                 <span
@@ -281,7 +353,7 @@ export default function Calendar() {
 
               <span
                 className="calendar__legend-dot"
-                style={{ backgroundColor: `var(--${id})` }}
+                style={{ backgroundColor: `var(--${color})` }}
                 title={label}
               />
 

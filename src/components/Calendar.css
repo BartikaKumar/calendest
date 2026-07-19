@@ -283,6 +283,78 @@
     line-height: 1;
     cursor: pointer;
   }
+
+  .calendar__event-details {
+    position: relative;
+  }
+
+  .calendar__event-details[open] {
+    z-index: 3;
+  }
+
+  .calendar__event-details > summary {
+    list-style: none;
+  }
+
+  .calendar__event-details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .calendar__event-menu {
+    top: calc(100% + 6px);
+    right: auto;
+    left: 50%;
+    width: min(240px, calc(100vw - 32px));
+    max-height: 240px;
+    overflow-y: auto;
+    transform: translateX(-50%);
+  }
+
+  .calendar__cell:nth-child(7n + 1) .calendar__event-menu,
+  .calendar__cell:nth-child(7n + 2) .calendar__event-menu {
+    left: 0;
+    transform: none;
+  }
+
+  .calendar__cell:nth-child(7n + 6) .calendar__event-menu,
+  .calendar__cell:nth-child(7n) .calendar__event-menu {
+    right: 0;
+    left: auto;
+    transform: none;
+  }
+
+  .calendar__event-menu-title {
+    padding: 6px 8px 8px;
+    color: var(--text);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .calendar__contest-link {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.75rem;
+    text-decoration: none;
+  }
+
+  .calendar__contest-link:hover,
+  .calendar__contest-link:focus-visible {
+    background: rgba(255, 255, 255, 0.05);
+    outline: none;
+  }
+
+  .calendar__contest-name {
+    overflow-wrap: anywhere;
+  }
+
+  .calendar__contest-meta {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+  }
   
   .calendar__legend {
     display: flex;
@@ -366,6 +438,26 @@
     min-width: 16px;
     height: 14px;
     border-radius: 4px;
+  }
+
+  .calendar__event-menu {
+    right: auto;
+    left: 50%;
+    width: min(220px, calc(100vw - 24px));
+    transform: translateX(-50%);
+  }
+
+  .calendar__cell:nth-child(7n + 1) .calendar__event-menu,
+  .calendar__cell:nth-child(7n + 2) .calendar__event-menu {
+    left: 0;
+    transform: none;
+  }
+
+  .calendar__cell:nth-child(7n + 6) .calendar__event-menu,
+  .calendar__cell:nth-child(7n) .calendar__event-menu {
+    right: 0;
+    left: auto;
+    transform: none;
   }
 
   .calendar__legend {
