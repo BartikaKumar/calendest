@@ -14,6 +14,7 @@ db.exec(`
         name TEXT,
         startTime INTEGER,
         duration INTEGER,
+        url TEXT,
         PRIMARY KEY (platform,contestId)
     )
 `)
@@ -41,6 +42,7 @@ const services={
 
 const fetchData= (async (platform)=>{
 
+    // we take care of ordering here
     const cachedContests= db.prepare(`
         SELECT *
         FROM contests
@@ -66,12 +68,12 @@ const fetchData= (async (platform)=>{
             `).run(platform)
     
             const insert= db.prepare(`
-                INSERT INTO contests(platform, contestId, name, startTime, duration)
-                VALUES (?,?,?,?,?)
+                INSERT INTO contests(platform, contestId, name, startTime, duration,url)
+                VALUES (?,?,?,?,?,?)
             `)
     
             fetchedData.forEach(contest => {
-                insert.run(platform,contest.id,contest.name,contest.startTime,contest.duration)
+                insert.run(platform,contest.id,contest.name,contest.startTime,contest.duration,contest.url)
             });
     
             db.prepare(`
@@ -125,6 +127,7 @@ const getData= (async (platform)=> {
     `).get(platform)?.lastFetchedAt ?? 0
 
     if(lastFetched+1800>Math.floor(new Date().getTime()/1000)){
+        // console.log("return fresh cache data")
         return db.prepare(`
             SELECT *
             FROM contests

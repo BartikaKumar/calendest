@@ -8,12 +8,13 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start":"node --env-file=.env server/server.js"
+    "start": "node --env-file=.env server/server.js"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
+    "express": "^5.1.0",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "express":"^5.1.0"
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

@@ -91,7 +91,8 @@ const get_lc= (async ()=>{
                     id:contest.titleSlug,
                     name:contest.title,
                     startTime:contest.startTime,
-                    duration:contest.duration
+                    duration:contest.duration,
+                    url:`https://leetcode.com/contest/${contest.titleSlug}`
                 })
             }
             skip+=num
@@ -109,7 +110,8 @@ const get_lc= (async ()=>{
                 id:contest.titleSlug,
                 name:contest.title,
                 startTime:contest.startTime,
-                duration:contest.duration
+                duration:contest.duration,
+                url:`https://leetcode.com/contest/${contest.titleSlug}`
             })
         }
     }

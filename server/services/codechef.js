@@ -22,7 +22,8 @@ const get_cc = (async () => {
             id:contest.contest_code,
             name:contest.contest_name,
             startTime:Math.floor(new Date(contest.contest_start_date_iso).getTime()/1000),
-            duration:contest.contest_duration*60
+            duration:contest.contest_duration*60,
+            url:`https://www.codechef.com/${contest.contest_code}`
         }))
 
     return formatted

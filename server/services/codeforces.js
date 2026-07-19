@@ -22,7 +22,8 @@ const get_cf = (async () => {
     id:contest.id,
     name:contest.name,
     startTime:contest.startTimeSeconds,
-    duration:contest.durationSeconds
+    duration:contest.durationSeconds,
+    url:`https://codeforces.com/contest/${contest.id}`
   }))
 
 })
