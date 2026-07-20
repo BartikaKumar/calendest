@@ -61,15 +61,21 @@ export default function App() {
                 </li>
                 <li>
                   <strong>Google Calendar</strong>
-                  <span>Open Google Calendar (web) → In the left sidebar, next to <em>Other calendars</em>, click <strong>+</strong> → <em>From URL</em> → Paste the URL → <em>Add calendar</em></span>
+                  <span>Open Google Calendar (web) → In the left sidebar, next to <em>Other calendars</em>, click <strong>+</strong> → <em>From URL</em> → Paste the URL → <em>Add calendar</em><br/><br/>
+                  <i>If the calendar doesn't appear in the Google Calendar mobile app, open the app → Settings → Calendest → Enable <em>Sync</em></i></span>
                 </li>
                 <li>
                   <strong>Outlook Calendar</strong>
-                  <span>Open Outlook Calendar → In the left sidebar, click <em>Add calendar</em> → <em>Subscribe from web</em> → Paste the URL → <em>Import</em></span>
+                  <span>Open Outlook Calendar (web) → In the left sidebar, click <em>Add calendar</em> → <em>Subscribe from web</em> → Paste the URL → <em>Import</em><br/><br/>
+                  <i>If the calendar doesn't appear in Outlook, make sure Calendest is checked in the left sidebar.</i></span>
                 </li>
                 <li>
                   <strong>Other calendar apps</strong>
                   <span>Many calendar apps support adding calendars through URLs. Feel free to check it out!</span>
+                </li>
+                <li>
+                  <strong>Reminders</strong>
+                  <span>Support varies by calendar app. For example, Google Calendar subscriptions use calendar-level notifications. To receive reminders, open <em>Google Calendar</em> → <em>Settings</em> → <em>Calendest</em> → <em>Event notifications</em></span>
                 </li>
                 <li>
                   <strong>Stay up to date</strong>

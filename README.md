@@ -1,5 +1,8 @@
 # Calendest
 
+Check it out here!
+https://calendest.onrender.com/
+
 Calendest is a competitive programming contest calendar that brings upcoming contests from multiple competitive programming platforms into one place. Filter the platforms you care about, generate a personalized URL, and keep your preferred calendar app automatically updated.
 
 ## Features
