@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "node --env-file=.env server/server.js"
+    "start": "node server/server.js"
   },
   "dependencies": {
     "cheerio": "^1.2.0",
