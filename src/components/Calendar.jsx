@@ -336,6 +336,7 @@ export default function Calendar() {
               key={`${currentDate.getDate()}-${inMonth ? 'yes' : 'no'}`}
               className={[
                 'calendar__cell',
+                (today.toDateString()===currentDate.toDateString()) ? 'calendar__cell--today' : '',
                 !inMonth ? 'calendar__cell--outside' : '',
               ].join(' ')}
             >
