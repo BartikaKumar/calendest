@@ -91,7 +91,6 @@ export default function App() {
                 className="help-modal__return"
                 onClick={() => setIsHelpOpen(false)}
               >
-                <span aria-hidden="true">←</span>
                 Return to calendar
               </button>
             </div>
