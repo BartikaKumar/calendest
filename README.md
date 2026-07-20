@@ -16,7 +16,7 @@ Calendest is a competitive programming contest calendar that brings upcoming con
 * 🔔 Configurable reminder times
 * 🔗 Generate a calendar URL
 * 📥 Subscribe from Google Calendar, Outlook, Apple Calendar, and other calendar apps
-* ♻️ Automatic updates through an iCalendar (ICS) feed
+* ♻️ Contests are automatically added, updated, and removed through an iCalendar (ICS) feed. Unlike email reminders, past contests don't clutter your inbox, and upcoming contests stay alongside your existing schedule with native calendar notifications.
 * ⚡ Backend caching with SQLite for faster responses and reduced external API requests
 
 ## Tech Stack
