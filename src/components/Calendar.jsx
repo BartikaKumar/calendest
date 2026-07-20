@@ -53,7 +53,7 @@ const formatDuration = (duration) => {
 
 const formatStartTime = (startTime) => new Date(startTime * 1000).toLocaleTimeString(
   [],
-  { hour: 'numeric', minute: '2-digit' },
+  { hour: '2-digit', minute: '2-digit' },
 )
 
 export default function Calendar() {
