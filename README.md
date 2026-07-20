@@ -14,7 +14,7 @@ Calendest is a competitive programming contest calendar that brings upcoming con
 * 🔗 Generate a calendar URL
 * 📥 Subscribe from Google Calendar, Outlook, Apple Calendar, and other calendar apps
 * ♻️ Automatic updates through an iCalendar (ICS) feed
-* ⚡ Backend caching with SQLite for faster responses and reduced API requests
+* ⚡ Backend caching with SQLite for faster responses and reduced external API requests
 
 ## Tech Stack
 
@@ -48,3 +48,12 @@ On desktop:
 * CodeChef
 * AtCoder
 * LeetCode
+
+## Data Sources
+
+Calendest aggregates contests from:
+
+- Codeforces API
+- CodeChef API
+- LeetCode GraphQL API
+- AtCoder (scraped using Cheerio)
