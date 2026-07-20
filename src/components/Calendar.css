@@ -293,7 +293,7 @@
   }
 
   .calendar__cell--today {
-    justify-content: center;
+    /* justify-content: center; */
     border-radius: 9px;
     background: rgba(139, 92, 246, 0.055);
     box-shadow:
