@@ -3,12 +3,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 30px;
   padding: 24px;
   box-sizing: border-box;
-  overflow-x: clip;
   -webkit-tap-highlight-color: transparent;
+}
+
+.page__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+  padding: 48px 0;
+  box-sizing: border-box;
 }
 
 .page__title {
@@ -23,6 +32,36 @@
   line-height: 1;
   text-align: center;
   text-shadow: 0 0 24px rgba(139, 92, 246, 0.38);
+}
+
+.page__footer {
+  width: min(100%, 700px);
+  padding: 20px 0 4px;
+  border-top: 1px solid rgba(167, 139, 250, 0.16);
+  color: #858097;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.page__footer p {
+  margin: 0;
+}
+
+.page__footer a {
+  color: #9b94ae;
+  text-decoration-color: rgba(155, 148, 174, 0.35);
+  text-underline-offset: 3px;
+}
+
+.page__footer a:hover {
+  color: #bca7ff;
+  text-decoration-color: rgba(188, 167, 255, 0.7);
+}
+
+.page__footer a:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid rgba(196, 181, 253, 0.7);
+  outline-offset: 3px;
 }
 
 .page__help-button {
@@ -212,6 +251,14 @@
 @media (max-width: 520px) {
   .page {
     padding: 12px;
+  }
+
+  .page__content {
+    padding: 42px 0 30px;
+  }
+
+  .page__footer {
+    padding: 16px 0 2px;
   }
 
   .page__help-button {

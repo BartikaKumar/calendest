@@ -276,7 +276,7 @@ export default function Calendar() {
 
         <span className="calendar__filter-label">Platforms</span>
 
-        <details className="calendar__select">
+        <details className="calendar__select calendar__platforms-select">
           <summary className="calendar__select-trigger">
             {selectedLabel}
           </summary>

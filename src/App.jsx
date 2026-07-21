@@ -34,8 +34,16 @@ export default function App() {
         </span>
         <span className="page__help-text">Help</span>
       </button>
-      <h1 className="page__title">Calendest</h1>
-      <Calendar />
+      <main className="page__content">
+        <h1 className="page__title">Calendest</h1>
+        <Calendar />
+      </main>
+
+      <footer className="page__footer">
+        <p>
+          Made with ❤️ by <a href="https://github.com/BartikaKumar" target="_blank" rel="noopener noreferrer">Bartika</a>
+        </p>
+      </footer>
 
       {isHelpOpen && (
         <div

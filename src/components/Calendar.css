@@ -363,12 +363,14 @@
     transform: translateX(-50%);
   }
 
+  .calendar__url-menu,
   .calendar__cell:nth-child(7n + 1) .calendar__event-menu,
   .calendar__cell:nth-child(7n + 2) .calendar__event-menu {
     left: 0;
     transform: none;
   }
 
+  .calendar__platforms-select .calendar__select-menu,
   .calendar__cell:nth-child(7n + 6) .calendar__event-menu,
   .calendar__cell:nth-child(7n) .calendar__event-menu {
     right: 0;
@@ -540,23 +542,7 @@
   }
 
   .calendar__event-menu {
-    right: auto;
-    left: 50%;
     width: min(220px, calc(100vw - 24px));
-    transform: translateX(-50%);
-  }
-
-  .calendar__cell:nth-child(7n + 1) .calendar__event-menu,
-  .calendar__cell:nth-child(7n + 2) .calendar__event-menu {
-    left: 0;
-    transform: none;
-  }
-
-  .calendar__cell:nth-child(7n + 6) .calendar__event-menu,
-  .calendar__cell:nth-child(7n) .calendar__event-menu {
-    right: 0;
-    left: auto;
-    transform: none;
   }
 
   .calendar__legend {
